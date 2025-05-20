@@ -1,183 +1,105 @@
+PROJETO SPOTIFY FEI
+VISÃO GERAL
+O Spotify FEI é um sistema completo de gerenciamento musical desenvolvido em Java utilizando interface gráfica Swing e arquitetura MVC. O projeto oferece funcionalidades robustas para cadastro de usuários, autenticação segura, gerenciamento de músicas e criação de playlists personalizadas. Com integração a banco de dados PostgreSQL, o sistema permite operações CRUD completas, pesquisa avançada por título ou artista, e uma experiência de usuário intuitiva através de suas diversas telas interconectadas.
 
+DETALHES TÉCNICOS
+COMPONENTES PRINCIPAIS
+Modelagem de Dados
 
+Usuario: Gerencia informações de autenticação (ID, nome, usuário, senha) com métodos de validação
 
+Musica: Armazena metadados musicais (ID, título, artista, duração) com formatação especializada
 
+Playlist: Estrutura flexível para agrupamento musical com métodos de manipulação de lista
 
-Projeto Spotify FEI
-Visão Geral do Projeto
-O Spotify FEI é um sistema de gerenciamento de músicas e playlists desenvolvido em Java com interface gráfica Swing, seguindo o padrão arquitetural MVC (Model-View-Controller). O sistema permite:
+Interface Gráfica
 
-Cadastro e autenticação de usuários
+Login/Cadastro: Telas responsivas com validação em tempo real e feedback visual
 
-Gerenciamento de músicas (cadastro, edição, exclusão)
+Menu Principal: Navegação simplificada entre módulos do sistema
 
-Criação e manipulação de playlists
+Gerenciamento Musical: Interface tabular com filtros e operações CRUD integradas
 
-Pesquisa de músicas por título ou artista
+Playlists: Visualização hierárquica com arrastar-e-soltar (drag-and-drop)
 
-Arquitetura do Sistema
+Lógica de Negócios
 
-1. Model (Modelagem de Dados)
+Controladores especializados para cada módulo
 
-Entidades Principais:
+Validação em múltiplas camadas (cliente/servidor)
 
-Usuario.java
+Tratamento de exceções granular
 
-Atributos: id, nome, usuario, senha
+Padrão DAO para persistência otimizada
 
-Métodos: getters/setters, autenticação básica
+Integração com Banco de Dados
 
-Musica.java
+Conexão PostgreSQL configurável
 
-Atributos: id, titulo, artista, duracao
+Pool de conexões eficiente
 
-Métodos: getters/setters, formatação de duração
+Consultas parametrizadas para segurança
 
-Playlist.java
+Transações ACID para operações críticas
 
-Atributos: nome, lista de músicas
+IMPLEMENTAÇÃO E EXECUÇÃO
+PRÉ-REQUISITOS
+Java JDK 11+
 
-Métodos: adicionar/remover músicas, editar música
+PostgreSQL 12+
 
-2. View (Interface Gráfica)
-LoginFrame.java
+Bibliotecas: JDBC, Swing
 
-Campos: usuário e senha
+CONFIGURAÇÃO INICIAL
+Criar database 'ProjetoSpotifei' no PostgreSQL
 
-Botões: login e cadastro
+Executar scripts DDL para criação de tabelas
 
-CadastroFrame.java
+Configurar parâmetros de conexão em conexao.java
 
-Campos: nome completo, usuário, senha
+Popular tabelas com dados iniciais (opcional)
 
-Validação de campos obrigatórios
+FLUXO DE TRABALHO TÍPICO
+Autenticação:
 
-MenuFrame.java
+Cadastro inicial com validação de duplicidade
 
-Opções: Gerenciar Músicas, Gerenciar Playlists, Sair
+Login seguro com criptografia básica
 
-MusicaFrame.java
+Gerenciamento Musical:
 
-Listagem de músicas
+Importação de metadados musicais
 
-Pesquisa por título/artista
+Pesquisa multicritério (título/artista)
 
-CRUD de músicas
+Edição em lote de propriedades
 
-PlaylistFrame.java
+Playlists:
 
-Criação de playlists
+Criação com nomes personalizados
 
-Adição/remoção de músicas
+Organização por tags/categorias
 
-Visualização de playlists existentes
+Exportação/importação em formato JSON
 
-3. Controller (Lógica de Aplicação)
-ControllerLogin.java
+Administração:
 
-Valida credenciais
+Backup automático de dados
 
-Gerencia fluxo de autenticação
+Logs de operações críticas
 
-Exibe mensagens de erro/sucesso
+Gerenciamento de usuários
 
-ControllerCadastro.java
+MELHORIAS FUTURAS
+Implementação de streaming musical
 
-Valida dados de cadastro
+Integração com APIs de provedores de conteúdo
 
-Verifica duplicidade de usuários
+Sistema de recomendações baseado em machine learning
 
-Gerencia persistência de novos usuários
+Versão mobile com sincronização em nuvem
 
-ControllerMusica.java
+Análise de estatísticas de reprodução
 
-Gerencia operações com músicas
-
-Pesquisa e listagem
-
-Integração com MusicaDAO
-
-ControllerPlaylist.java
-
-Criação e edição de playlists
-
-Adição/remoção de músicas
-
-Atualização da interface
-
-ControllerMenu.java
-
-Navegação entre telas
-
-Gerencia ações do menu principal
-
-4. DAO (Acesso a Dados)
-UsuarioDAO.java
-
-Métodos: inserir, atualizar, remover, autenticar
-
-Consultas: por usuário, por usuário/senha
-
-MusicaDAO.java
-
-Métodos: listar todas, pesquisar
-
-Consultas: por título ou artista
-
-PlaylistDAO.java
-
-Métodos: adicionar/remover músicas, editar
-
-Armazenamento em memória (poderia ser persistente)
-
-conexao.java
-
-Gerencia conexão com PostgreSQL
-
-Configuração de URL, usuário e senha
-
-Métodos auxiliares para cadastro
-
-Funcionalidades Implementadas
-Autenticação e Cadastro
-Login com validação de credenciais
-
-Cadastro de novos usuários com verificação de duplicidade
-
-Mensagens de feedback para o usuário
-
-Gerenciamento de Músicas
-Listagem completa de músicas
-
-Pesquisa por termos (título ou artista)
-
-Interface tabular para visualização
-
-Playlists
-Criação de playlists com nome personalizado
-
-Adição e remoção de músicas
-
-Visualização do conteúdo da playlist
-
-Edição de músicas na playlist
-
-Configuração do Banco de Dados
-O sistema utiliza PostgreSQL com a seguinte configuração padrão
-
-
-jdbc:postgresql://localhost:5432/ProjetoSpotifei
-Usuário: postgres
-Senha: 1211
-
-
-Como Executar o Projeto
-Certifique-se de ter o Java JDK 8+ instalado
-
-Configure o banco de dados PostgreSQL com as tabelas necessárias
-
-Importe o projeto na sua IDE favorita (Eclipse, IntelliJ, etc.)
-
-Execute a classe principal ou construa o arquivo JAR
-
+O projeto representa uma base sólida para sistemas de gerenciamento musical, com arquitetura escalável e boas práticas de desenvolvimento. O código-fonte está organizado para facilitar a manutenção e extensão de funcionalidades.
 
