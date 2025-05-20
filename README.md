@@ -1,4 +1,8 @@
-projeto spotifei
+
+
+
+
+
 Projeto Spotify FEI
 Visão Geral do Projeto
 O Spotify FEI é um sistema de gerenciamento de músicas e playlists desenvolvido em Java com interface gráfica Swing, seguindo o padrão arquitetural MVC (Model-View-Controller). O sistema permite:
