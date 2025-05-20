@@ -1,47 +1,79 @@
 package view;
 
 import Controller.ControllerMusica;
+import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JLabel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Musica;
 
 
+
 public class MusicaFrame extends javax.swing.JFrame {
     private ControllerMusica controllerMusica;
+    private JFrame menuAnterior;
+
     
     public MusicaFrame() {
         initComponents();
         this.controllerMusica = new ControllerMusica();
+        
         txtPesquisa.setToolTipText("Digite o nome da música ou artista");
+        
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         configurarTabelaMusicas();
+        carregarMusicas();
+        setLocationRelativeTo(null);
+        
+
         
     }
     private void configurarTabelaMusicas() {
-        
-        String[] colunas = {"Música", "Artista", "Duração"};
-        Object[][] dados = {};
-           
-        
-        DefaultTableModel model = new DefaultTableModel(dados, colunas){
+         String[] colunas = {"ID", "Música", "Artista", "Duração"};
+        DefaultTableModel model = new DefaultTableModel(colunas,0){
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
-        
-        if (TabelasMusicas != null) {
             TabelasMusicas.setModel(model);
-            TabelasMusicas.getColumnModel().getColumn(0).setPreferredWidth(200);
+            TabelasMusicas.getColumnModel().getColumn(0).setPreferredWidth(50);
             TabelasMusicas.setRowHeight(25);
-        }else{
-        JOptionPane.showMessageDialog(this,
-            "Erro ao configurar tabela",
-            "Erro", JOptionPane.ERROR_MESSAGE);
+    
     }
+    private void carregarMusicas() {
+        DefaultTableModel model = (DefaultTableModel) TabelasMusicas.getModel();
+        model.setRowCount(0);
+        
+        try {
+            List<Musica> musicas = controllerMusica.listarTodasMusicas();
+            for(Musica musica : musicas) {
+                model.addRow(new Object[]{
+                    musica.getId(),
+                    musica.getTitulo(),
+                    musica.getArtista(),
+                    musica.getDuracao()
+                });
+            }
+        } catch(Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                "Erro ao carregar músicas: " + ex.getMessage(),
+                "Erro", JOptionPane.ERROR_MESSAGE);
+            
+            // Carrega dados de exemplo em caso de erro
+            model.addRow(new Object[]{1,"Billie Jean", "Michael Jackson", "4:54"});
+            model.addRow(new Object[]{2,"Shape of You", "Ed Sheeran", "3:53"});
+            model.addRow(new Object[]{3,"Blinding Lights", "The Weeknd", "3:20"});
+            model.addRow(new Object[]{4,"Dance Monkey", "Tones and I", "3:29"});
+            model.addRow(new Object[]{5,"Save Your Tears", "The Weeknd", "3:35"});
+            model.addRow(new Object[]{6,"Montero", "Lil Nas X", "2:17"});
+            model.addRow(new Object[]{7,"Stay", "Post Malone", "3:24"});
+            model.addRow(new Object[]{8,"Industry Baby", "Lil Nas X", "3:32"});
+            model.addRow(new Object[]{9,"Sweet Child O'Mine", "Guns N' Roses", "5:56"});
+        }
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -54,8 +86,7 @@ public class MusicaFrame extends javax.swing.JFrame {
         TabelasMusicas = new javax.swing.JTable();
         btnBuscar = new javax.swing.JButton();
         btnAddPlaylist = new javax.swing.JButton();
-        txtPesquisa = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        txtPesquisa = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 0));
@@ -98,6 +129,8 @@ public class MusicaFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(TabelasMusicas);
 
         btnBuscar.setBackground(new java.awt.Color(29, 185, 84));
+        btnBuscar.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        btnBuscar.setText("BUSCAR");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarActionPerformed(evt);
@@ -105,65 +138,53 @@ public class MusicaFrame extends javax.swing.JFrame {
         });
 
         btnAddPlaylist.setBackground(new java.awt.Color(29, 185, 84));
+        btnAddPlaylist.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        btnAddPlaylist.setText("ADICIONAR NA PLAYLIST");
         btnAddPlaylist.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddPlaylistActionPerformed(evt);
             }
         });
 
-        txtPesquisa.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        txtPesquisa.setForeground(new java.awt.Color(255, 255, 255));
-        txtPesquisa.setText("BUSCAR");
-
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("ADICIONAR NA PLAYLIST");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(101, 101, 101)
                         .addComponent(txtCatalogo, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(45, 45, 45)
-                                        .addComponent(txtPesquisa))
-                                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnAddPlaylist, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))))))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                                    .addComponent(txtPesquisa))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnAddPlaylist, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnVoltar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(7, 7, 7)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCatalogo, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
+                .addComponent(txtCatalogo, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtPesquisa)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAddPlaylist, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnVoltar, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAddPlaylist, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtPesquisa, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -181,15 +202,24 @@ public class MusicaFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
-        new MenuFrame().setVisible(true);
-        this.dispose();
+      System.out.println("Botão voltar clicado");
+      
+    if(menuAnterior != null) {
+          System.out.println("Tornando menu anterior visível");
+          menuAnterior.setVisible(true);
+          menuAnterior.setLocationRelativeTo(null); 
+          
+    } else {
+        new MenuFrame().setVisible(true); 
+    }
+    this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
        String termo = txtPesquisa.getText().trim(); 
     
     if (termo.isEmpty() || termo.equalsIgnoreCase("Buscar")) {
-        carregarTodasMusicas();
+        carregarMusicas();
         return;
     }
     try {
@@ -222,24 +252,43 @@ public class MusicaFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnAddPlaylistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPlaylistActionPerformed
-         int linhaSelecionada = TabelasMusicas.getSelectedRow();
-    
-    if (linhaSelecionada == -1) {
-        JOptionPane.showMessageDialog(this, 
-            "Selecione uma música para adicionar à playlist!",
-            "Aviso", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-     
-    
-    
-    
-    
-    
-    
-    
-    
+    try{
+        int[] selectedRows = TabelasMusicas.getSelectedRows();
+        if (selectedRows.length == 0) {
+            JOptionPane.showMessageDialog(this, "Selecione pelo menos uma música!",
+                    "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         
+        
+        List<Musica> musicasSelecionadas = new ArrayList<>();
+        DefaultTableModel model = (DefaultTableModel) TabelasMusicas.getModel();
+        
+        for (int row: selectedRows) {
+            
+            int modelRow = TabelasMusicas.convertRowIndexToModel(row);
+            
+            int id = (int) model.getValueAt(modelRow, 0 );
+            String titulo = model.getValueAt(modelRow, 1).toString();
+            String artista = model.getValueAt(modelRow, 2).toString();
+            String duracao = model.getValueAt(modelRow, 3).toString();
+            
+            musicasSelecionadas.add(new Musica(id,titulo, artista, duracao));
+        }
+        
+        PlaylistFrame playlistFrame = PlaylistFrame.getInstance(this);
+        playlistFrame.adicionarMusicas(musicasSelecionadas);
+        playlistFrame.setVisible(true);
+    
+        JOptionPane.showMessageDialog(this,
+            musicasSelecionadas.size() + "músicas adicionadas a playlist!",
+            "Sucesso" , JOptionPane.INFORMATION_MESSAGE);
+    
+        } catch (Exception ex)  {
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao adicionar músicas: " + ex.getMessage(),
+                    "Erro", JOptionPane.ERROR_MESSAGE);
+        }   
     }//GEN-LAST:event_btnAddPlaylistActionPerformed
 
 
@@ -262,72 +311,16 @@ public class MusicaFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnVoltar;
     private javax.swing.JColorChooser jColorChooser1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel txtCatalogo;
-    private javax.swing.JLabel txtPesquisa;
+    private javax.swing.JTextField txtPesquisa;
     // End of variables declaration//GEN-END:variables
 
-    
-    
+   
 
-   public MusicaFrame(JLabel txtCatalogo) {
-        this.txtCatalogo = txtCatalogo;
-        setLocationRelativeTo(null);
-    }
-    private void voltarParaMenu() {
-        MenuFrame menu = new MenuFrame();
-        menu.setVisible(true);
-        this.dispose();
-    }
-
-//    private void carregarMusicas() {
-//        try {
-//            
-//            MusicaDAO musicaDAO = new MusicaDAO();
-//            DefaultTableModel model = (DefaultTableModel) TabelasMusicas.getModel();
-//            model.setRowCount(0); 
-//           
-//            model.addRow(new Object[]{"Billie Jean", "Michael Jackson", "4:54"});
-//            model.addRow(new Object[]{"Shape of You", "Ed Sheeran", "3:53"});
-//            model.addRow(new Object[]{"Blinding Lights", "The Weeknd", "3:20"});
-//            model.addRow(new Object[]{"Dance Monkey", "Tones and I", "3:29"});
-//            model.addRow(new Object[]{"Save Your Tears", "The Weeknd", "3:35"});
-//            model.addRow(new Object[]{"Montero", "Lil Nas X", "2:17"});
-//            model.addRow(new Object[]{"Stay", "Post Malone", "3:24"});
-//            model.addRow(new Object[]{"Industry Baby", "Lil Nas X", "3:32"});
-//            model.addRow(new Object[]{"Sweet Child O'Mine", "Guns N' Roses", "5:56"});
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(this, 
-//                "Erro ao carregar músicas: " + e.getMessage(),
-//                "Erro", JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
-
-    private void carregarTodasMusicas() {
-       try {
-        List<Musica> todasMusicas = controllerMusica.listarTodasMusicas();
-        DefaultTableModel model = (DefaultTableModel) TabelasMusicas.getModel();
-        model.setRowCount(0);
-        
-        for(Musica musica : todasMusicas) {
-            model.addRow(new Object[]{
-                musica.getTitulo(),
-                musica.getArtista(),
-                musica.getDuracao()
-            });
-        }
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this,
-            "Erro ao carregar músicas: " + ex.getMessage(),
-            "Erro", JOptionPane.ERROR_MESSAGE);
-        ex.printStackTrace();
-    }
+  
 }
-
-
-    }
 
     
 
