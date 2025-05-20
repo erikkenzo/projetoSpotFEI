@@ -6,7 +6,8 @@ public class Musica {
     private String artista;
     private String duracao;
     
-    public Musica(String titulo, String artista, String duracao) {
+    public Musica(int id, String titulo, String artista, String duracao) {
+        this.id = id;
         this.titulo = titulo;
         this.artista = artista;
         this.duracao = duracao;
@@ -15,16 +16,15 @@ public class Musica {
     public Musica() {
     }
     
-      public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-
+    public int getId() { return id; }
+    public void setId(int id) {this.id = id;}
+    
     public String getTitulo() { return titulo; }
-    public void setTitulo(String titulo) { this.titulo = titulo; }
-
+    public void setTitulo(String titulo) {this.titulo = titulo;}
+    
     public String getArtista() { return artista; }
-    public void setArtista(String artista) { this.artista = artista; }
-
+    public void setArtista(String artista) {this.artista = artista;}
+    
     public String getDuracao() { return duracao; }
-    public void setDuracao(String duracao) { this.duracao = duracao; }
-
+    public void setDuracao(String duracao) {this.duracao = duracao;}
 }
