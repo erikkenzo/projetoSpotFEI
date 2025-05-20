@@ -1,5 +1,6 @@
 package Conexao;
 
+import DAO.PlaylistDAO;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
@@ -68,6 +69,8 @@ public class conexao {
      public static Connection getConnection() throws SQLException {
         return conectar(); // Reutiliza a conexão existente
     }
+
+   
  
 }
     
