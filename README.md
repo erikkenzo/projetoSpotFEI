@@ -1,105 +1,101 @@
-PROJETO SPOTIFY FEI
-VISÃO GERAL
-O Spotify FEI é um sistema completo de gerenciamento musical desenvolvido em Java utilizando interface gráfica Swing e arquitetura MVC. O projeto oferece funcionalidades robustas para cadastro de usuários, autenticação segura, gerenciamento de músicas e criação de playlists personalizadas. Com integração a banco de dados PostgreSQL, o sistema permite operações CRUD completas, pesquisa avançada por título ou artista, e uma experiência de usuário intuitiva através de suas diversas telas interconectadas.
+Projeto Spotify FEI - Documentação
+Visão Geral
+O Spotify FEI é um sistema de gerenciamento de músicas e playlists desenvolvido em Java com interface gráfica Swing, seguindo o padrão arquitetural MVC (Model-View-Controller).
 
-DETALHES TÉCNICOS
-COMPONENTES PRINCIPAIS
-Modelagem de Dados
+Funcionalidades Principais
+✔ Autenticação de usuários (login e cadastro)
+✔ Gerenciamento de músicas (CRUD: criar, ler, atualizar, deletar)
+✔ Criação e edição de playlists
+✔ Pesquisa de músicas (por título ou artista)
 
-Usuario: Gerencia informações de autenticação (ID, nome, usuário, senha) com métodos de validação
+Arquitetura do Sistema
+1. Model (Modelagem de Dados)
+Classe	Atributos	Métodos Principais
+Usuario.java	id, nome, usuario, senha	getters/setters, autenticar()
+Musica.java	id, titulo, artista, duracao	getters/setters, formatarDuracao()
+Playlist.java	nome, List<Musica>	adicionarMusica(), removerMusica()
 
-Musica: Armazena metadados musicais (ID, título, artista, duração) com formatação especializada
+2. View (Interface Gráfica)
+Tela	Componentes Principais
+LoginFrame.java	Campos: usuário e senha / Botões: Login e Cadastro
+CadastroFrame.java	Campos: nome, usuário, senha / Validação de dados
+MenuFrame.java	Opções: Gerenciar Músicas, Playlists, Sair
+MusicaFrame.java	Lista de músicas / CRUD / Pesquisa
+PlaylistFrame.java	Criação de playlists / Adição de músicas
 
-Playlist: Estrutura flexível para agrupamento musical com métodos de manipulação de lista
+3. Controller (Lógica de Aplicação)
+Controller	Responsabilidade
+ControllerLogin.java	Valida credenciais e gerencia autenticação
+ControllerCadastro.java	Gerencia cadastro de novos usuários
+ControllerMusica.java	Controla operações de músicas (CRUD, busca)
+ControllerPlaylist.java	Gerencia criação e edição de playlists
+ControllerMenu.java	Navegação entre telas do sistema
 
-Interface Gráfica
+4. DAO (Acesso a Dados)
+Classe	Métodos Principais
+UsuarioDAO.java	inserir(), autenticar(), buscarPorUsuario()
+MusicaDAO.java	listarTodas(), pesquisarPorTitulo()
+PlaylistDAO.java	adicionarMusica(), removerMusica()
 
-Login/Cadastro: Telas responsivas com validação em tempo real e feedback visual
 
-Menu Principal: Navegação simplificada entre módulos do sistema
 
-Gerenciamento Musical: Interface tabular com filtros e operações CRUD integradas
+Conexao.java	Gerencia conexão com PostgreSQL
+Configuração do Banco de Dados
+O sistema utiliza PostgreSQL com a seguinte configuração:
 
-Playlists: Visualização hierárquica com arrastar-e-soltar (drag-and-drop)
+URL: jdbc:postgresql://localhost:5432/ProjetoSpotifei  
+Usuário: postgres  
+Senha: 1211  
 
-Lógica de Negócios
 
-Controladores especializados para cada módulo
+Tabelas Necessárias
 
-Validação em múltiplas camadas (cliente/servidor)
+CREATE TABLE Usuario (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    usuario VARCHAR(50) UNIQUE NOT NULL,
+    senha VARCHAR(50) NOT NULL
+);
 
-Tratamento de exceções granular
+CREATE TABLE Musica (
+    id SERIAL PRIMARY KEY,
+    titulo VARCHAR(100) NOT NULL,
+    artista VARCHAR(100) NOT NULL,
+    duracao INT NOT NULL
+);
 
-Padrão DAO para persistência otimizada
+CREATE TABLE Playlist (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    usuario_id INT REFERENCES Usuario(id)
+);
 
-Integração com Banco de Dados
+CREATE TABLE Playlist_Musica (
+    playlist_id INT REFERENCES Playlist(id),
+    musica_id INT REFERENCES Musica(id),
+    PRIMARY KEY (playlist_id, musica_id)
+);
 
-Conexão PostgreSQL configurável
 
-Pool de conexões eficiente
 
-Consultas parametrizadas para segurança
+Como Executar o Projeto
+Pré-requisitos
+✅ Java JDK 8+ instalado
+✅ PostgreSQL configurado com as tabelas acima
+✅ IDE (Eclipse, IntelliJ, VS Code) ou terminal com Maven
 
-Transações ACID para operações críticas
+Passos para Execução
+Clone o repositório (se aplicável) ou importe o projeto na IDE.
 
-IMPLEMENTAÇÃO E EXECUÇÃO
-PRÉ-REQUISITOS
-Java JDK 11+
+Configure o banco de dados no arquivo Conexao.java.
 
-PostgreSQL 12+
+Execute a classe principal (Main.java ou equivalente).
 
-Bibliotecas: JDBC, Swing
+Acesse o sistema via interface gráfica.
 
-CONFIGURAÇÃO INICIAL
-Criar database 'ProjetoSpotifei' no PostgreSQL
+Build e Execução via Terminal
+# Compilar
+javac -d bin src/*.java  
 
-Executar scripts DDL para criação de tabelas
-
-Configurar parâmetros de conexão em conexao.java
-
-Popular tabelas com dados iniciais (opcional)
-
-FLUXO DE TRABALHO TÍPICO
-Autenticação:
-
-Cadastro inicial com validação de duplicidade
-
-Login seguro com criptografia básica
-
-Gerenciamento Musical:
-
-Importação de metadados musicais
-
-Pesquisa multicritério (título/artista)
-
-Edição em lote de propriedades
-
-Playlists:
-
-Criação com nomes personalizados
-
-Organização por tags/categorias
-
-Exportação/importação em formato JSON
-
-Administração:
-
-Backup automático de dados
-
-Logs de operações críticas
-
-Gerenciamento de usuários
-
-MELHORIAS FUTURAS
-Implementação de streaming musical
-
-Integração com APIs de provedores de conteúdo
-
-Sistema de recomendações baseado em machine learning
-
-Versão mobile com sincronização em nuvem
-
-Análise de estatísticas de reprodução
-
-O projeto representa uma base sólida para sistemas de gerenciamento musical, com arquitetura escalável e boas práticas de desenvolvimento. O código-fonte está organizado para facilitar a manutenção e extensão de funcionalidades.
-
+# Executar
+java -cp bin Main  
